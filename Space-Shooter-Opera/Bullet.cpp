@@ -4,7 +4,7 @@ Bullet::Bullet(Vector2 pos, float speed, Type type, const char* texturePath) : E
 {
 
 	if (texturePath && texturePath[0] != '\0') {
-		texture = LoadTexture("assets/player/playerBullet.png");
+		texture = LoadTexture(texturePath);
 	}
 }
 
@@ -20,7 +20,7 @@ void Bullet::Update(float dt)
 		switch (m_type)
 		{
 		case Bullet::Type::NORMAL:
-			position.x -= m_speed * dt;
+			position.y -= m_speed * dt;
 			break;
 		case Bullet::Type::GIANT:
 			break;
@@ -42,7 +42,7 @@ void Bullet::Draw()
 			DrawTextureCentered();
 		}
 		else {
-			DrawCircleV(position, 10, ORANGE);
+			DrawCircleV(position, 3, ORANGE);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #include "Player.h"
-
-
+#include "EntityManager.h"
+#include "Bullet.h"
+#include <memory>
 
 void Player::StayInBounds()
 {
@@ -19,6 +20,13 @@ void Player::StayInBounds()
 	// Set x and y to the player posiiton
 	position.x = x;
 	position.y = y;
+}
+
+void Player::Shoot(float dt, EntityManager& manager)
+{
+	manager.AddEntity(std::make_unique<Bullet>(
+		position, 200.f, Bullet::Type::NORMAL, "assets/player/playerBullet.png"
+	));
 }
 
 Player::Player(Vector2 pos, float speed, const char* texturePath) :
@@ -40,6 +48,11 @@ Player::~Player()
 
 void Player::Update(float dt)
 {
+
+}
+
+void Player::Update(float dt, EntityManager& manager)
+{
 	if (IsKeyDown(KEY_W))
 		position.y -= m_speed * dt;
 	if (IsKeyDown(KEY_S))
@@ -50,10 +63,20 @@ void Player::Update(float dt)
 		position.x += m_speed * dt;
 
 	StayInBounds();
+
+	// Player shoot
+	m_shotTimer += dt;
+	if (m_shotTimer > m_coolDown) {
+		if (IsKeyDown(KEY_SPACE)) {
+			Shoot(dt, manager);
+		}
+		m_shotTimer = 0;
+	}
 }
 
 void Player::Draw()
 {
+	// Draw the player
 	if (texture.id != 0) {
 		DrawTextureCentered();
 	}

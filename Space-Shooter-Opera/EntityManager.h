@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <functional>
 
 class EntityManager
 {
@@ -36,5 +37,16 @@ public:
 				entity->Draw();
 			}
 		}
+	}
+
+	template<typename T>
+	std::vector<T*> GetEntityOfType() {
+		std::vector<T*> result;
+		for (auto& entity : m_entities) {
+			if (T* derived = dynamic_cast<T*>(entity.get())) {
+				result.push_back(derived);
+			}
+		}
+		return result;
 	}
 };

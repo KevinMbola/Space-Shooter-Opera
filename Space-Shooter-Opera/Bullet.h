@@ -15,7 +15,7 @@ private:
 
 public:
     
-
+    Bullet() : Entity({ 0,0 }), m_speed(0.f), m_type(Type::NORMAL) {}
     Bullet(Vector2 pos, float speed, Type type = Type::NORMAL, const char* texturePath = nullptr);
     ~Bullet();
 

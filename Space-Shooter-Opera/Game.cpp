@@ -28,7 +28,17 @@ void Game::Init()
 
 void Game::Update()
 {
+
 	dt = GetFrameTime();
+	
+
+	// Get the player type and use the other update function
+	auto player = m_entManager.GetEntityOfType<Player>();
+	if (!player.empty()) {
+		for (auto* player : player) {
+			player->Update(dt, m_entManager);
+		}
+	}
 
 	m_entManager.UpdateAll(dt);
 }

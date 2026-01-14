@@ -4,7 +4,7 @@
 #include "EntityManager.h"
 
 #include "Player.h"
-
+#include "Bullet.h"
 
 
 #define SCREEN_WIDTH 500
