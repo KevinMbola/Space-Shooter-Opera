@@ -24,6 +24,12 @@ void Game::Init()
 		200.f,
 		"assets/player/player.png"
 	));
+
+	// Add an enemy
+	m_entManager.AddEntity(std::make_unique<Enemy>(
+		Vector2{100, 0}, 200.f, Enemy::Type::SPEEDER, 
+		"assets/player/player.png"
+	));
 }
 
 void Game::Update()
