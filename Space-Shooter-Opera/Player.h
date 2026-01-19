@@ -8,6 +8,7 @@
 
 #define MAX_BULLETS 1000
 
+
 class EntityManager;
 
 class Player :

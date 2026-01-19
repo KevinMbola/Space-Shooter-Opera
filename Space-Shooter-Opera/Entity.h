@@ -1,6 +1,9 @@
 #pragma once
 #include <raylib.h>
 
+#define SCREEN_WIDTH 500
+#define SCREEN_HEIGHT 800
+
 class Entity
 {
 protected:
@@ -24,7 +27,13 @@ public:
 
 	bool IsActive() const { return active; }
 	void SetActive(bool state) { active = state; }
+
+	void SetVelocity(Vector2 vel) { velocity = vel; }
+	void SetRotation(float rot) { rotation = rot; }
+
 	Vector2 GetPosition() const { return position; }
+	Vector2 GetVelocity() const { return velocity; }
+	float GetRotation() const { return rotation; }
 
 	float GetX() const { return position.x; }
 	float GetY() const { return position.y; }

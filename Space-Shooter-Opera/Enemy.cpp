@@ -1,4 +1,6 @@
 #include "Enemy.h"
+#include "EntityManager.h"
+#include "Bullet.h"
 
 void Enemy::UpdateShooter(float dt)
 {
@@ -82,6 +84,7 @@ void Enemy::Update(float dt)
 		break;
 	}
 }
+
 
 void Enemy::Draw()
 {

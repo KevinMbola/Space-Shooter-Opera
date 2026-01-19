@@ -20,7 +20,8 @@ void Bullet::Update(float dt)
 		switch (m_type)
 		{
 		case Bullet::Type::NORMAL:
-			position.y -= m_speed * dt;
+			position.x += velocity.x * dt;
+			position.y += velocity.y * dt;
 			break;
 		case Bullet::Type::GIANT:
 			break;
@@ -31,6 +32,12 @@ void Bullet::Update(float dt)
 		default:
 			break;
 		}
+
+		// If bullet is not on screen make it inactive
+		if (position.x < 0 || position.x > SCREEN_WIDTH
+			|| position.y < 0 || position.y > SCREEN_HEIGHT)
+			SetActive(false);
+
 	}
 }
 

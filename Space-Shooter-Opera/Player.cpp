@@ -24,9 +24,13 @@ void Player::StayInBounds()
 
 void Player::Shoot(float dt, EntityManager& manager)
 {
-	manager.AddEntity(std::make_unique<Bullet>(
-		position, 200.f, Bullet::Type::NORMAL, "assets/player/playerBullet.png"
-	));
+	float bulletSpeed = 200.f;
+	Vector2 bulletVel = { 0, -bulletSpeed }; // For upward momentum
+	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, "assets/player/playerBullet.png");
+	bullet->SetVelocity(bulletVel);
+	bullet->SetRotation(-90.f); // For upwards
+
+	manager.AddEntity(std::move(bullet));
 }
 
 Player::Player(Vector2 pos, float speed, const char* texturePath) :
