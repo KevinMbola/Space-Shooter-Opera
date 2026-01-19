@@ -36,6 +36,8 @@ void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 	std::uniform_real_distribution<> distX(m_minPosX, m_maxPosX);
 	std::uniform_real_distribution<> distY(m_minPosY, m_maxPosY);
 
+	Vector2 pointToPlayer = Vector2Subtract(playerPos, position);
+	float angleRad = atan2f(pointToPlayer.y, pointToPlayer.x);
 
 	// Generate the random position
 	float posX = distX(gen);
@@ -50,12 +52,17 @@ void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 		break;
 	case ShooterEnemy::Phases::MOVE:
 		{
+			
 			Vector2 dir = Vector2Normalize(Vector2Subtract(m_targetPos, position));
 			float dist = Vector2Distance(position, m_targetPos);
 			float step = m_speed * dt;
 			if (dist > step)
 			{
+				
+
 				position = Vector2Add(position, Vector2Scale(dir, step));
+				rotation = angleRad * (180.0f / PI);
+				
 			}
 			else
 			{
@@ -63,10 +70,13 @@ void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 				m_phase = Phases::WAITING;
 				m_waitTimer = 0.0f;
 			}
+
+
 		}
 		break;
 	case ShooterEnemy::Phases::WAITING:
 		m_waitTimer += dt;
+		rotation = angleRad * (180.0f / PI);
 		if (m_waitTimer >= m_waitDuration)
 		{
 			m_phase = Phases::IDLE; // Go to next position
