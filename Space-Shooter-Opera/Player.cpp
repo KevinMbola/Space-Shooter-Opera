@@ -92,3 +92,8 @@ void Player::Draw()
 
 }
 
+Vector2& Player::GetPosition()
+{
+	return position;
+}
+

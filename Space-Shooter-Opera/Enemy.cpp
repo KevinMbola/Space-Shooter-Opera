@@ -22,14 +22,34 @@ void Enemy::UpdateBoss(float dt)
 {
 }
 
-Enemy::Enemy(Vector2 pos, float speed, Type t, const char* texturePath)
-	: Entity(pos, 1.0f, 90.f), m_speed(speed), m_target(pos), m_health(0), m_type(t)
+Enemy::Enemy(Vector2 pos, float speed, const char* texturePath)
+	: Entity(pos, 1.0f, 90.f), m_speed(speed), m_target(pos), m_health(0), m_type(Type::NONE)
 {
 	if (texturePath && texturePath[0] != '\0') {
 		texture = LoadTexture(texturePath);
 	}
 
-	SetCollisionBox(0.15f, 0.15f, 0.7, 0.7f);
+	SetCollisionBox(0.15f, 0.15f, 0.7f, 0.7f);
+
+	switch (m_type)
+	{
+	case Enemy::Type::SHOOTER:
+		m_health = 1;
+		break;
+	case Enemy::Type::SPEEDER:
+		m_health = 1;
+		break;
+	case Enemy::Type::BRUISER:
+		m_health = 3;
+		break;
+	case Enemy::Type::BOSS:
+		m_health = 10;
+		break;
+	default:
+		break;
+	}
+
+
 }
 
 Enemy::~Enemy()

@@ -10,8 +10,9 @@ class Enemy :
     public Entity
 {
 public:
-    enum class Type { SHOOTER, SPEEDER, BRUISER, BOSS };
-private:
+    enum class Type { NONE, SHOOTER, SPEEDER, BRUISER, BOSS };
+
+protected:
     float m_speed;
     Vector2 m_target;
     int m_health;
@@ -24,7 +25,7 @@ private:
     void UpdateBoss(float dt);
 
 public:
-    Enemy(Vector2 pos, float speed, Type t, const char* texturePath = nullptr);
+    Enemy(Vector2 pos, float speed, const char* texturePath = nullptr);
     ~Enemy();
 
     void Update(float dt) override;

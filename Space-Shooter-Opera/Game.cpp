@@ -26,8 +26,8 @@ void Game::Init()
 	));
 
 	// Add an enemy
-	m_entManager.AddEntity(std::make_unique<Enemy>(
-		Vector2{100, 0}, 200.f, Enemy::Type::SPEEDER, 
+	m_entManager.AddEntity(std::make_unique<ShooterEnemy>(
+		Vector2{100, 0}, 200.f, 
 		"assets/player/player.png"
 	));
 }
@@ -40,9 +40,18 @@ void Game::Update()
 
 	// Get the player type and use the other update function
 	auto player = m_entManager.GetEntityOfType<Player>();
+	Vector2 pPos = { 0, 0 };
 	if (!player.empty()) {
 		for (auto* player : player) {
+			pPos = player->GetPosition();
 			player->Update(dt, m_entManager);
+		}
+	}
+
+	auto shooters = m_entManager.GetEntityOfType<ShooterEnemy>();
+	if (!shooters.empty()) {
+		for (auto* shooter : shooters) {
+			shooter->Update(dt, m_entManager, pPos);
 		}
 	}
 

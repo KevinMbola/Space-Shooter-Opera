@@ -30,5 +30,7 @@ public:
     void Update(float dt, EntityManager& manager);
     void Draw() override;
 
+    Vector2& GetPosition();
+
 };
 
