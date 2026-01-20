@@ -49,4 +49,18 @@ public:
 		}
 		return result;
 	}
+
+	template<typename T1, typename T2>
+	void CheckCollision(std::function<void(T1*, T2*)> onCollision) {
+		auto ent1 = GetEntityOfType<T1>();
+		auto ent2 = GetEntityOfType<T2>();
+
+		for (auto* e1 : ent1) {
+			for (auto* e2 : ent2) {
+				if (CheckCollisionRecs(e1->GetBounds(), e2->GetBounds())) {
+					onCollision(e1, e2);
+				}
+			}
+		}
+	}
 };

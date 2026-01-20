@@ -37,5 +37,6 @@ public:
     void SetTarget(Vector2 t);
     void TakeDamage(int damage);
     int GetHealth() const;
+    Type GetType() const;
 };
 

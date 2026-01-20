@@ -29,7 +29,7 @@ void Player::Shoot(float dt, EntityManager& manager)
 	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, "assets/player/playerBullet.png");
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(-90.f); // For upwards
-
+	bullet->SetOwner(this);
 	manager.AddEntity(std::move(bullet));
 }
 
@@ -96,8 +96,18 @@ void Player::Draw()
 
 }
 
+void Player::TakeDamage(int damage)
+{
+	m_health -= damage;
+}
+
 Vector2& Player::GetPosition()
 {
 	return position;
+}
+
+int Player::GetHealth()
+{
+	return m_health;
 }
 

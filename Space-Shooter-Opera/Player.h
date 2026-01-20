@@ -31,7 +31,11 @@ public:
     void Update(float dt, EntityManager& manager);
     void Draw() override;
 
+    void TakeDamage(int damage);
+
     Vector2& GetPosition();
+    int GetHealth();
+    
 
 };
 

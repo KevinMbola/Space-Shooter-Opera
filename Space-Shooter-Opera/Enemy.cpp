@@ -108,9 +108,15 @@ void Enemy::SetTarget(Vector2 t)
 
 void Enemy::TakeDamage(int damage)
 {
+	damage -= m_health;
 }
 
 int Enemy::GetHealth() const
 {
 	return m_health;
+}
+
+Enemy::Type Enemy::GetType() const
+{
+	return m_type;
 }

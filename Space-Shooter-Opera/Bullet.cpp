@@ -6,11 +6,22 @@ Bullet::Bullet(Vector2 pos, float speed, Type type, const char* texturePath) : E
 	if (texturePath && texturePath[0] != '\0') {
 		texture = LoadTexture(texturePath);
 	}
+
 }
 
 Bullet::~Bullet()
 {
 
+}
+
+void Bullet::SetOwner(Entity* owner)
+{
+	m_owner = owner;
+}
+
+Entity* Bullet::GetOwner() const
+{
+	return m_owner;
 }
 
 void Bullet::Update(float dt)

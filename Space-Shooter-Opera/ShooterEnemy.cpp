@@ -49,6 +49,7 @@ void ShooterEnemy::ShootAtPlayer(float dt, Vector2 playerPos, EntityManager& man
 	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, "assets/player/playerBullet.png");
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(rotation);
+	bullet->SetOwner(this);
 	manager.AddEntity(std::move(bullet));
 }
 
@@ -104,6 +105,4 @@ void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 		ShootAtPlayer(dt, playerPos, manager);
 		m_shootTimer = 0.0f;
 	}
-
-	TraceLog(LOG_INFO, "Health: %d", GetHealth());
 }
