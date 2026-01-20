@@ -28,7 +28,7 @@ private:
     void UpdateBoss(float dt);
 
 public:
-    Enemy(Vector2 pos, float speed, const char* texturePath = nullptr);
+    Enemy(Vector2 pos, float speed, Type t, const char* texturePath = nullptr);
     ~Enemy();
 
     void Update(float dt) override;

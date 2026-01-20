@@ -11,7 +11,7 @@ void ShooterEnemy::StayInBounds()
 	if (position.x > SCREEN_WIDTH - 20)
 		position.x = SCREEN_WIDTH - 20;
 
-	// Clamp Y
+	// Clamp Y 
 	if (position.y < 0)
 		position.y = 0;
 	if (position.y > SCREEN_HEIGHT - 200)
@@ -53,10 +53,8 @@ void ShooterEnemy::ShootAtPlayer(float dt, Vector2 playerPos, EntityManager& man
 }
 
 ShooterEnemy::ShooterEnemy(Vector2 pos, float speed, const char* texturePath)
-	: Enemy(pos, speed, texturePath), m_phase(Phases::IDLE), m_minPosX(50.f), m_maxPosX(SCREEN_WIDTH - 50.f), m_minPosY(50.f), m_maxPosY(SCREEN_HEIGHT - 200)
+	: Enemy(pos, speed, Type::SHOOTER, texturePath), m_phase(Phases::IDLE), m_minPosX(50.f), m_maxPosX(SCREEN_WIDTH - 50.f), m_minPosY(50.f), m_maxPosY(SCREEN_HEIGHT - 200)
 {
-	// Make the enemy a shooter type
-	m_type = Type::SHOOTER;
 }
 
 void ShooterEnemy::Update(float dt)
@@ -106,4 +104,6 @@ void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 		ShootAtPlayer(dt, playerPos, manager);
 		m_shootTimer = 0.0f;
 	}
+
+	TraceLog(LOG_INFO, "Health: %d", GetHealth());
 }

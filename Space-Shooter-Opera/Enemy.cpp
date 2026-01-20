@@ -24,8 +24,8 @@ void Enemy::UpdateBoss(float dt)
 {
 }
 
-Enemy::Enemy(Vector2 pos, float speed, const char* texturePath)
-	: Entity(pos, 1.0f, 90.f), m_speed(speed), m_target(pos), m_health(0), m_type(Type::NONE)
+Enemy::Enemy(Vector2 pos, float speed, Type t, const char* texturePath)
+	: Entity(pos, 1.0f, 90.f), m_speed(speed), m_target(pos), m_health(0), m_type(t)
 {
 	if (texturePath && texturePath[0] != '\0') {
 		texture = LoadTexture(texturePath);
@@ -36,13 +36,13 @@ Enemy::Enemy(Vector2 pos, float speed, const char* texturePath)
 	switch (m_type)
 	{
 	case Enemy::Type::SHOOTER:
-		m_health = 1;
+		m_health = 3;
 		break;
 	case Enemy::Type::SPEEDER:
 		m_health = 1;
 		break;
 	case Enemy::Type::BRUISER:
-		m_health = 3;
+		m_health = 5;
 		break;
 	case Enemy::Type::BOSS:
 		m_health = 10;
