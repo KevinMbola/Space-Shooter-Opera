@@ -39,7 +39,7 @@ void ShooterEnemy::MoveShooterEnemy(float dt, float angleRad)
 	}
 }
 
-void ShooterEnemy::ShootAtPlayer(float dt, Vector2 playerPos, EntityManager& manager)
+void ShooterEnemy::ShootAtPlayer(EntityManager& manager)
 {
 	float angleRad = rotation * (PI / 180.0f);
 	float bulletSpeed = 300.f;
@@ -102,7 +102,7 @@ void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 
 	m_shootTimer += dt;
 	if (m_shootTimer >= m_shootInterval) {
-		ShootAtPlayer(dt, playerPos, manager);
+		ShootAtPlayer(manager);
 		m_shootTimer = 0.0f;
 	}
 }

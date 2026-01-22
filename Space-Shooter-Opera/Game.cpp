@@ -21,7 +21,7 @@ void Game::Init()
 
 	m_entManager.AddEntity(std::make_unique<Player>(
 		Vector2{ SCREEN_WIDTH / 2, SCREEN_HEIGHT - 100 },
-		200.f,
+		400.f,
 		"assets/player/player.png"
 	));
 

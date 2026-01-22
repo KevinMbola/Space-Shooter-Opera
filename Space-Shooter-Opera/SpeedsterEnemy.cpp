@@ -1,9 +1,13 @@
 #include "SpeedsterEnemy.h"
+#include "EntityManager.h"
+#include "Bullet.h"
 
-void SpeedsterEnemy::StraightPhaseUpdate(float dt, float angleRad)
+void SpeedsterEnemy::StraightPhaseUpdate(float dt)
 {
 	TraceLog(LOG_INFO, "Doing Phase: STRAIGHT");
 
+	// Make sure the rotation of the enemy is straight
+	rotation = 90.f;
 
 	m_target = { position.x, SCREEN_HEIGHT + 50 };
 
@@ -27,9 +31,13 @@ void SpeedsterEnemy::StraightPhaseUpdate(float dt, float angleRad)
 	
 }
 
-void SpeedsterEnemy::uShapePhaseUpdate(float dt)
+void SpeedsterEnemy::uShapePhaseUpdate(float dt, Vector2 playerPos)
 {
 	TraceLog(LOG_INFO, "Doing Phase: USHAPE");
+
+	// To point to the player 
+	Vector2 pointToPlayer = Vector2Subtract(playerPos, position);
+	float angleRad = atan2f(pointToPlayer.y, pointToPlayer.x);
 	float step = m_speed * dt;
 	switch (m_uShapeStep)
 	{
@@ -55,6 +63,7 @@ void SpeedsterEnemy::uShapePhaseUpdate(float dt)
 
 	if (dist > step) {
 		position = Vector2Add(position, Vector2Scale(dir, step));
+		rotation = angleRad * (180.0f / PI);
 	}
 	else {
 		position = m_target;
@@ -67,6 +76,20 @@ void SpeedsterEnemy::uShapePhaseUpdate(float dt)
 		else if (m_uShapeStep == UShapeStep::UP)
 			m_phase = Phase::WAIT;
 	}
+}
+
+void SpeedsterEnemy::ShootAtPlayer(EntityManager& manager)
+{
+	float angleRad = rotation * (PI / 180.0f);
+	float bulletSpeed = 300.f;
+	Vector2 bulletVel = { cosf(angleRad) * bulletSpeed, sinf(angleRad) * bulletSpeed };
+
+	// Create bullet at the enemy position
+	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, "assets/player/playerBullet.png");
+	bullet->SetVelocity(bulletVel);
+	bullet->SetRotation(rotation);
+	bullet->SetOwner(this);
+	manager.AddEntity(std::move(bullet));
 }
 
 SpeedsterEnemy::Phase SpeedsterEnemy::selectNextPhase()
@@ -92,8 +115,6 @@ void SpeedsterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 
 
 	// The ship will either move in a U bend or straight across the screen
-	Vector2 pointToPlayer = Vector2Subtract(playerPos, position);
-	float angleRad = atan2f(pointToPlayer.y, pointToPlayer.x);
 	srand(time(0));
 
 
@@ -106,10 +127,17 @@ void SpeedsterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 		m_phase = selectNextPhase();
 		break;
 	case SpeedsterEnemy::Phase::STRAIGHT:
-		StraightPhaseUpdate(dt, angleRad);
+		StraightPhaseUpdate(dt);
 		break;
 	case SpeedsterEnemy::Phase::USHAPE:
-		uShapePhaseUpdate(dt);
+		uShapePhaseUpdate(dt, playerPos);
+		
+		// Shoot only in this phase
+		m_shootTimer += dt;
+		if (m_shootTimer >= m_shootInterval) {
+			ShootAtPlayer(manager);
+			m_shootTimer = 0.0f;
+		}
 		break;
 	case SpeedsterEnemy::Phase::WAIT:
 		m_waitTimer += dt;
@@ -121,4 +149,6 @@ void SpeedsterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 	default:
 		break;
 	}
+
+	
 }

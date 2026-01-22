@@ -3,6 +3,7 @@
 
 #include <random>
 
+class EntityManager;
 
 class SpeedsterEnemy :
     public Enemy
@@ -18,7 +19,7 @@ private:
     float m_waitTimer = 0.0f;
     float m_waitDuration = 1.0f; // Wait a second at each position
     float m_shootTimer = 0.0f;
-    float m_shootInterval = 1.0f; // seconds between shots
+    float m_shootInterval = .6f; // seconds between shots
 
 
     float m_minPosX, m_minPosY;
@@ -26,8 +27,10 @@ private:
 
     std::mt19937 m_rng{ std::random_device{}() };
 
-    void StraightPhaseUpdate(float dt, float angleRad);
-    void uShapePhaseUpdate(float dt);
+    void StraightPhaseUpdate(float dt);
+    void uShapePhaseUpdate(float dt, Vector2 playerPos);
+
+    void ShootAtPlayer(EntityManager& manager); // Will shoot at player 
     Phase selectNextPhase();
 
 public:

@@ -26,7 +26,7 @@ private:
 
     void StayInBounds();
     void MoveShooterEnemy(float dt, float angleRad);
-    void ShootAtPlayer(float dt, Vector2 playerPos, EntityManager& manager);
+    void ShootAtPlayer(EntityManager& manager);
 
 public:
     ShooterEnemy(Vector2 pos, float speed, const char* texturePath = nullptr);
