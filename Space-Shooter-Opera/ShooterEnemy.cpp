@@ -50,6 +50,7 @@ void ShooterEnemy::ShootAtPlayer(EntityManager& manager)
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(rotation);
 	bullet->SetOwner(this);
+	bullet->SetFaction(Bullet::Faction::ENEMY);
 	manager.AddEntity(std::move(bullet));
 }
 
@@ -77,32 +78,42 @@ void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 	float posX = distX(gen);
 	float posY = distY(gen);
 
-	// What phase in the enemy in
-	switch (m_phase)
-	{
-	case ShooterEnemy::Phases::IDLE:
-		// Pick a new random target position
-		m_targetPos = { (float)posX, (float)posY };
-		m_phase = Phases::MOVE;
-		break;
-	case ShooterEnemy::Phases::MOVE:
-		MoveShooterEnemy(dt, angleRad);
-		break;
-	case ShooterEnemy::Phases::WAITING:
-		m_waitTimer += dt;
-		rotation = angleRad * (180.0f / PI);
-		if (m_waitTimer >= m_waitDuration)
-		{
-			m_phase = Phases::IDLE; // Go to next position
-		}
-		break;
-	default:
-		break;
+	int health = GetHealth();
+
+	if (health <= 0) {
+		SetActive(false);
 	}
 
-	m_shootTimer += dt;
-	if (m_shootTimer >= m_shootInterval) {
-		ShootAtPlayer(manager);
-		m_shootTimer = 0.0f;
+	if (IsActive())
+	{
+		// What phase in the enemy in
+		switch (m_phase)
+		{
+		case ShooterEnemy::Phases::IDLE:
+			// Pick a new random target position
+			m_targetPos = { (float)posX, (float)posY };
+			m_phase = Phases::MOVE;
+			break;
+		case ShooterEnemy::Phases::MOVE:
+			MoveShooterEnemy(dt, angleRad);
+			break;
+		case ShooterEnemy::Phases::WAITING:
+			m_waitTimer += dt;
+			rotation = angleRad * (180.0f / PI);
+			if (m_waitTimer >= m_waitDuration)
+			{
+				m_phase = Phases::IDLE; // Go to next position
+			}
+			break;
+		default:
+			break;
+		}
+
+		// Shoot mechanics
+		m_shootTimer += dt;
+		if (m_shootTimer >= m_shootInterval) {
+			ShootAtPlayer(manager);
+			m_shootTimer = 0.0f;
+		}
 	}
 }

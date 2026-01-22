@@ -2,30 +2,55 @@
 #include "EntityManager.h"
 #include "Bullet.h"
 
-void Enemy::UpdateShooter(float dt)
+void Enemy::DrawHealthBar()
 {
+	float healthBarWidth = texture.width;
+	int maxHealth = GetMaxHealth();
+	int health = GetHealth();
+
 	
-}
-
-void Enemy::UpdateSpeedster(float dt)
-{
-	position.y += m_speed * dt;
-
-	if (position.y > SCREEN_HEIGHT + 20) {
-		SetActive(false);
+	switch (m_type)
+	{
+	case Enemy::Type::SHOOTER:
+		m_healthColour = (health <= 3) ? RED
+			: (health <= 5) ? YELLOW
+			: GREEN;
+		break;
+	case Enemy::Type::SPEED:
+		m_healthColour = GREEN;
+		break;
+	case Enemy::Type::BOSS:
+		m_healthColour = (health <= 5) ? RED
+			: (health <= 10) ? YELLOW
+			: GREEN;
+		break;
+	default:
+		break;
 	}
-}
 
-void Enemy::UpdateBruiser(float dt)
-{
-}
+	// Filled portion is proportuinal to health
+	float fillWidth = healthBarWidth * (float(health) / maxHealth);
 
-void Enemy::UpdateBoss(float dt)
-{
+	Rectangle healthRect = {
+		position.x - healthBarWidth / 2,
+		position.y - 35,
+		fillWidth,
+		10
+	};
+
+	Rectangle healthBorderRect = {
+		healthRect.x,
+		healthRect.y,
+		healthBarWidth,
+		12.5f
+	};
+
+	DrawRectangleRec(healthRect, m_healthColour);
+	DrawRectangleLinesEx(healthBorderRect, 2, BLACK);
 }
 
 Enemy::Enemy(Vector2 pos, float speed, Type t, const char* texturePath)
-	: Entity(pos, 1.0f, 90.f), m_speed(speed), m_target(pos), m_health(0), m_type(t)
+	: Entity(pos, 1.0f, 90.f), m_speed(speed), m_target(pos), m_maxHealth(0), m_health(0), m_type(t)
 {
 	if (texturePath && texturePath[0] != '\0') {
 		texture = LoadTexture(texturePath);
@@ -36,22 +61,22 @@ Enemy::Enemy(Vector2 pos, float speed, Type t, const char* texturePath)
 	switch (m_type)
 	{
 	case Enemy::Type::SHOOTER:
-		m_health = 3;
+		m_maxHealth = 7;
 		break;
 	case Enemy::Type::SPEED:
-		m_health = 1;
+		m_maxHealth = 1;
 		break;
 	case Enemy::Type::BRUISER:
-		m_health = 5;
+		m_maxHealth = 5;
 		break;
 	case Enemy::Type::BOSS:
-		m_health = 10;
+		m_maxHealth = 20;
 		break;
 	default:
 		break;
 	}
 
-
+	m_health = m_maxHealth;
 }
 
 Enemy::~Enemy()
@@ -62,27 +87,7 @@ Enemy::~Enemy()
 
 void Enemy::Update(float dt)
 {
-	//Vector2 dir = Vector2Normalize(Vector2Subtract(m_target, position));
-	//velocity = Vector2Scale(dir, m_speed);
-	//position = Vector2Add(position, Vector2Scale(velocity, dt));
 
-	switch (m_type)
-	{
-	case Enemy::Type::SHOOTER:
-		UpdateShooter(dt);
-		break;
-	case Enemy::Type::SPEED:
-		UpdateSpeedster(dt);
-		break;
-	case Enemy::Type::BRUISER:
-		UpdateBruiser(dt);
-		break;
-	case Enemy::Type::BOSS:
-		UpdateBoss(dt);
-		break;
-	default:
-		break;
-	}
 }
 
 
@@ -94,6 +99,8 @@ void Enemy::Draw()
 	else {
 		DrawCircleV(position, 10, RED);
 	}
+
+	DrawHealthBar();
 
 #ifdef DEBUG
 	Rectangle bounds = GetBounds();
@@ -108,12 +115,17 @@ void Enemy::SetTarget(Vector2 t)
 
 void Enemy::TakeDamage(int damage)
 {
-	damage -= m_health;
+	m_health -= damage;
 }
 
 int Enemy::GetHealth() const
 {
 	return m_health;
+}
+
+int Enemy::GetMaxHealth() const
+{
+	return m_maxHealth;
 }
 
 Enemy::Type Enemy::GetType() const

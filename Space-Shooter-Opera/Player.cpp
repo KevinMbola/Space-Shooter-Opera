@@ -30,6 +30,7 @@ void Player::Shoot(float dt, EntityManager& manager)
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(-90.f); // For upwards
 	bullet->SetOwner(this);
+	bullet->SetFaction(Bullet::Faction::PLAYER);
 	manager.AddEntity(std::move(bullet));
 }
 
@@ -49,8 +50,35 @@ void Player::TriggerInvincibility(float dt)
 	}
 }
 
+void Player::DrawHealthBar()
+{
+	float healthBarWidth = texture.width;
+	int health = GetHealth();
+	Color color = (health < 10) ? RED
+		: (health < 25) ? YELLOW 
+		: GREEN;
+
+	Rectangle healthRect = {
+		position.x - healthBarWidth / 2,
+		position.y + 30,
+		healthBarWidth * (health / 50.f),
+		10
+	};
+
+	Rectangle healthBorderRect = {
+		healthRect.x,
+		healthRect.y,
+		healthBarWidth + 3,
+		12.5f
+	};
+
+	DrawRectangleRec(healthRect, color);
+	DrawRectangleLinesEx(healthBorderRect, 2, BLACK);
+	//DrawRectangle(position.x - healthBarWidth / 2, position.y + 10, healthBarWidth * (health / 50.f), 10, GREEN);
+}
+
 Player::Player(Vector2 pos, float speed, const char* texturePath) :
-	Entity(pos, 1.0f, -90.f), m_speed(speed), m_health(100)
+	Entity(pos, 1.0f, -90.f), m_speed(speed), m_health(50)
 {
 	if (texturePath && texturePath[0] != '\0') {
 		texture = LoadTexture(texturePath);
@@ -110,6 +138,8 @@ void Player::Draw()
 		// Draw a placement circle
 		DrawCircleV(position, 20, BLUE);
 	}
+
+	DrawHealthBar();
 
 #ifdef  DEBUG
 	Rectangle bounds = GetBounds();

@@ -89,12 +89,12 @@ void SpeedsterEnemy::ShootAtPlayer(EntityManager& manager)
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(rotation);
 	bullet->SetOwner(this);
+	bullet->SetFaction(Bullet::Faction::ENEMY);
 	manager.AddEntity(std::move(bullet));
 }
 
 SpeedsterEnemy::Phase SpeedsterEnemy::selectNextPhase()
 {
-
 	int phaseIndex = std::uniform_int_distribution<int>(0, 1)(m_rng);
 	m_phase = (phaseIndex == 0) ? Phase::STRAIGHT : Phase::USHAPE;
 	return m_phase;
@@ -112,42 +112,48 @@ void SpeedsterEnemy::Update(float dt)
 
 void SpeedsterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 {
-
-
 	// The ship will either move in a U bend or straight across the screen
 	srand(time(0));
 
+	int health = GetHealth();
 
-	switch (m_phase)
+	if (health <= 0) {
+		SetActive(false);
+	}
+
+	if (IsActive())
 	{
-	case SpeedsterEnemy::Phase::IDLE:
-		leftSpawnPoint = std::uniform_int_distribution<int>(0, 1)(m_rng) == 0;
-		leftSpawnPoint ? position = { SCREEN_WIDTH / 2 - 150, -50 } : position = { SCREEN_WIDTH / 2 + 150, -50 }; // Keep the enmy off screen
-		m_uShapeStep = UShapeStep::DOWN;
-		m_phase = selectNextPhase();
-		break;
-	case SpeedsterEnemy::Phase::STRAIGHT:
-		StraightPhaseUpdate(dt);
-		break;
-	case SpeedsterEnemy::Phase::USHAPE:
-		uShapePhaseUpdate(dt, playerPos);
-		
-		// Shoot only in this phase
-		m_shootTimer += dt;
-		if (m_shootTimer >= m_shootInterval) {
-			ShootAtPlayer(manager);
-			m_shootTimer = 0.0f;
-		}
-		break;
-	case SpeedsterEnemy::Phase::WAIT:
-		m_waitTimer += dt;
-		if (m_waitTimer >= m_waitDuration)
+		switch (m_phase)
 		{
-			m_phase = Phase::IDLE; // Go to next position
+		case SpeedsterEnemy::Phase::IDLE:
+			leftSpawnPoint = std::uniform_int_distribution<int>(0, 1)(m_rng) == 0;
+			leftSpawnPoint ? position = { SCREEN_WIDTH / 2 - 150, -50 } : position = { SCREEN_WIDTH / 2 + 150, -50 }; // Keep the enmy off screen
+			m_uShapeStep = UShapeStep::DOWN;
+			m_phase = selectNextPhase();
+			break;
+		case SpeedsterEnemy::Phase::STRAIGHT:
+			StraightPhaseUpdate(dt);
+			break;
+		case SpeedsterEnemy::Phase::USHAPE:
+			uShapePhaseUpdate(dt, playerPos);
+
+			// Shoot only in this phase
+			m_shootTimer += dt;
+			if (m_shootTimer >= m_shootInterval) {
+				ShootAtPlayer(manager);
+				m_shootTimer = 0.0f;
+			}
+			break;
+		case SpeedsterEnemy::Phase::WAIT:
+			m_waitTimer += dt;
+			if (m_waitTimer >= m_waitDuration)
+			{
+				m_phase = Phase::IDLE; // Go to next position
+			}
+			break;
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
 
 	

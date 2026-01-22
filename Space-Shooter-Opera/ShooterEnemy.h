@@ -28,6 +28,8 @@ private:
     void MoveShooterEnemy(float dt, float angleRad);
     void ShootAtPlayer(EntityManager& manager);
 
+    
+
 public:
     ShooterEnemy(Vector2 pos, float speed, const char* texturePath = nullptr);
 

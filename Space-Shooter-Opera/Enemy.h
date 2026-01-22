@@ -18,14 +18,13 @@ public:
 protected:
     float m_speed;
     Vector2 m_target;
+    int m_maxHealth;
     int m_health;
+    Color m_healthColour;
     Type m_type;
 
 private:
-    void UpdateShooter(float dt);
-    void UpdateSpeedster(float dt);
-    void UpdateBruiser(float dt);
-    void UpdateBoss(float dt);
+    void DrawHealthBar();
 
 public:
     Enemy(Vector2 pos, float speed, Type t, const char* texturePath = nullptr);
@@ -37,6 +36,7 @@ public:
     void SetTarget(Vector2 t);
     void TakeDamage(int damage);
     int GetHealth() const;
+    int GetMaxHealth() const;
     Type GetType() const;
 };
 

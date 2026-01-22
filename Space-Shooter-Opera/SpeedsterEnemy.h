@@ -21,10 +21,6 @@ private:
     float m_shootTimer = 0.0f;
     float m_shootInterval = .6f; // seconds between shots
 
-
-    float m_minPosX, m_minPosY;
-    float m_maxPosX, m_maxPosY;
-
     std::mt19937 m_rng{ std::random_device{}() };
 
     void StraightPhaseUpdate(float dt);

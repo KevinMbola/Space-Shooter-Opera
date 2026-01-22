@@ -32,6 +32,8 @@ private:
     void Shoot(float dt, EntityManager& manager);
     void TriggerInvincibility(float dt);
 
+    void DrawHealthBar();
+
 public:
     Player(Vector2 pos, float speed, const char* texturePath = nullptr);
     ~Player();

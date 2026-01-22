@@ -24,6 +24,16 @@ Entity* Bullet::GetOwner() const
 	return m_owner;
 }
 
+void Bullet::SetFaction(Faction f)
+{
+	m_faction = f;
+}
+
+Bullet::Faction Bullet::GetFaction() const
+{
+	return m_faction;
+}
+
 void Bullet::Update(float dt)
 {
 	if (active)
