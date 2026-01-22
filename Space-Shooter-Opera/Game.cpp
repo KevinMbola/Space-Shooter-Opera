@@ -54,7 +54,7 @@ void Game::Update()
 		}
 	}
 
-	// Get the shooter enemy and update
+	//// Get the shooter enemy and update
 	auto shooters = m_entManager.GetEntityOfType<ShooterEnemy>();
 	if (!shooters.empty()) {
 		for (auto* shooter : shooters) {
@@ -63,13 +63,19 @@ void Game::Update()
 	}
 
 	auto speedsters = m_entManager.GetEntityOfType<SpeedsterEnemy>();
-	if (!speedsters.empty()) {
-		for (auto* speed : speedsters) {
-			speed->Update(dt, m_entManager, pPos);
-		}
-	}
+	//if (!speedsters.empty()) {
+	//	for (auto* speed : speedsters) {
+	//		speed->Update(dt, m_entManager, pPos);
+	//	}
+	//}
 
 	m_entManager.UpdateAll(dt);
+
+	// Player colliding with an Enemy
+	m_entManager.CheckCollision<Enemy, Player>([](Enemy* e, Player* p) {
+		p->TakeDamageOnImpact(1);
+		TraceLog(LOG_INFO, "Player Health: %d", p->GetHealth());
+	});
 
 	// Bullet colliding with an Enemy Type
 	m_entManager.CheckCollision<Bullet, Enemy>([](Bullet* b, Enemy* e) {
@@ -83,10 +89,14 @@ void Game::Update()
 
 	// Bullet Colliding with Player
 	m_entManager.CheckCollision<Bullet, Player>([](Bullet* b, Player* p) {
+		if (b->GetOwner() == p)
+			return;
 		b->SetActive(false);
 		p->TakeDamage(1);
 		TraceLog(LOG_INFO, "Player Health: %d", p->GetHealth());
 	});
+
+
 }
 
 void Game::Draw() const

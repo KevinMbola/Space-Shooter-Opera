@@ -25,6 +25,8 @@ private:
 	EntityManager m_entManager;
 
 	float dt;
+	float m_waitTimer = 0.0f;
+	float m_waitDuration = 3.f;
 
 private:
 	void Init();

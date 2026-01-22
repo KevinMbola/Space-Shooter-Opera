@@ -54,7 +54,7 @@ void ShooterEnemy::ShootAtPlayer(EntityManager& manager)
 }
 
 ShooterEnemy::ShooterEnemy(Vector2 pos, float speed, const char* texturePath)
-	: Enemy(pos, speed, Type::SHOOTER, texturePath), m_phase(Phases::IDLE), m_minPosX(50.f), m_maxPosX(SCREEN_WIDTH - 50.f), m_minPosY(50.f), m_maxPosY(SCREEN_HEIGHT - 200)
+	: Enemy(pos, speed, Type::SHOOTER, texturePath), m_phase(Phases::IDLE), m_minPosX(50.f), m_maxPosX(SCREEN_WIDTH - 50.f), m_minPosY(50.f), m_maxPosY(SCREEN_HEIGHT / 2)
 {
 }
 

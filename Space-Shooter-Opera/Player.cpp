@@ -24,13 +24,29 @@ void Player::StayInBounds()
 
 void Player::Shoot(float dt, EntityManager& manager)
 {
-	float bulletSpeed = 200.f;
+	float bulletSpeed = 400.f;
 	Vector2 bulletVel = { 0, -bulletSpeed }; // For upward momentum
 	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, "assets/player/playerBullet.png");
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(-90.f); // For upwards
 	bullet->SetOwner(this);
 	manager.AddEntity(std::move(bullet));
+}
+
+void Player::TriggerInvincibility(float dt)
+{
+	if (m_invincible) {
+		m_invincibleTimer += dt;
+		m_flashTimer += dt;
+		if (m_flashTimer >= m_flashInterval) {
+			m_flashVisible = !m_flashVisible;
+			m_flashTimer = 0.0f;
+		}
+		if (m_invincibleTimer >= m_invincibleDuration) {
+			m_invincible = false;
+			m_flashVisible = true;
+		}
+	}
 }
 
 Player::Player(Vector2 pos, float speed, const char* texturePath) :
@@ -76,10 +92,16 @@ void Player::Update(float dt, EntityManager& manager)
 		}
 		m_shotTimer = 0;
 	}
+
+	TriggerInvincibility(dt);
 }
 
 void Player::Draw()
 {
+	if (m_invincible && !m_flashVisible) {
+		return;
+	}
+
 	// Draw the player
 	if (texture.id != 0) {
 		DrawTextureCentered();
@@ -99,6 +121,18 @@ void Player::Draw()
 void Player::TakeDamage(int damage)
 {
 	m_health -= damage;
+}
+
+void Player::TakeDamageOnImpact(int damage)
+{
+	TraceLog(LOG_INFO, "Hit on Impact!");
+	if (!m_invincible) {
+		m_health -= damage;
+		m_invincible = true;
+		m_invincibleTimer = 0.0f;
+		m_flashTimer = 0.0f;
+		m_flashVisible = true;
+	}
 }
 
 Vector2& Player::GetPosition()

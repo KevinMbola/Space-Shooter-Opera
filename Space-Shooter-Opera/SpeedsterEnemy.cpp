@@ -4,7 +4,7 @@
 
 void SpeedsterEnemy::StraightPhaseUpdate(float dt)
 {
-	TraceLog(LOG_INFO, "Doing Phase: STRAIGHT");
+	//TraceLog(LOG_INFO, "Doing Phase: STRAIGHT");
 
 	// Make sure the rotation of the enemy is straight
 	rotation = 90.f;
@@ -33,7 +33,7 @@ void SpeedsterEnemy::StraightPhaseUpdate(float dt)
 
 void SpeedsterEnemy::uShapePhaseUpdate(float dt, Vector2 playerPos)
 {
-	TraceLog(LOG_INFO, "Doing Phase: USHAPE");
+	//TraceLog(LOG_INFO, "Doing Phase: USHAPE");
 
 	// To point to the player 
 	Vector2 pointToPlayer = Vector2Subtract(playerPos, position);
