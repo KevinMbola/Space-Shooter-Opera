@@ -13,7 +13,7 @@ class Enemy :
     public Entity
 {
 public:
-    enum class Type { NONE, SHOOTER, SPEEDER, BRUISER, BOSS };
+    enum class Type { NONE, SHOOTER, SPEED, BRUISER, BOSS };
 
 protected:
     float m_speed;

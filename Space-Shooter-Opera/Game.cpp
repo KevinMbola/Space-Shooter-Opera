@@ -30,6 +30,12 @@ void Game::Init()
 		Vector2{100, 0}, 200.f, 
 		"assets/player/player.png"
 	));
+
+	// Add an enemy
+	m_entManager.AddEntity(std::make_unique<SpeedsterEnemy>(
+		Vector2{ 100, 0 }, 450.f,
+		"assets/player/player.png"
+	));
 }
 
 void Game::Update()
@@ -53,6 +59,13 @@ void Game::Update()
 	if (!shooters.empty()) {
 		for (auto* shooter : shooters) {
 			shooter->Update(dt, m_entManager, pPos);
+		}
+	}
+
+	auto speedsters = m_entManager.GetEntityOfType<SpeedsterEnemy>();
+	if (!speedsters.empty()) {
+		for (auto* speed : speedsters) {
+			speed->Update(dt, m_entManager, pPos);
 		}
 	}
 

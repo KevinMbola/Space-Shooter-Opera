@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "ShooterEnemy.h"
+#include "SpeedsterEnemy.h"
 
 
 #define SCREEN_WIDTH 500

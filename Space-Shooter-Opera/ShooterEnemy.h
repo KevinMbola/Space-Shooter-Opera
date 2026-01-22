@@ -29,7 +29,7 @@ private:
     void ShootAtPlayer(float dt, Vector2 playerPos, EntityManager& manager);
 
 public:
-    ShooterEnemy(Vector2 pos, float m_speed, const char* texturePath = nullptr);
+    ShooterEnemy(Vector2 pos, float speed, const char* texturePath = nullptr);
 
     void Update(float dt) override;
     void Update(float dt, EntityManager& manager, Vector2 playerPos);

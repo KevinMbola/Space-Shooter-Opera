@@ -38,7 +38,7 @@ Enemy::Enemy(Vector2 pos, float speed, Type t, const char* texturePath)
 	case Enemy::Type::SHOOTER:
 		m_health = 3;
 		break;
-	case Enemy::Type::SPEEDER:
+	case Enemy::Type::SPEED:
 		m_health = 1;
 		break;
 	case Enemy::Type::BRUISER:
@@ -71,7 +71,7 @@ void Enemy::Update(float dt)
 	case Enemy::Type::SHOOTER:
 		UpdateShooter(dt);
 		break;
-	case Enemy::Type::SPEEDER:
+	case Enemy::Type::SPEED:
 		UpdateSpeedster(dt);
 		break;
 	case Enemy::Type::BRUISER:
