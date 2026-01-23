@@ -66,17 +66,16 @@ void ShooterEnemy::Update(float dt)
 void ShooterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 {
 	// For the random generator on both X and Y axis
-	std::mt19937 gen(m_rd());
-	std::uniform_real_distribution<> distX(m_minPosX, m_maxPosX);
-	std::uniform_real_distribution<> distY(m_minPosY, m_maxPosY);
+	float distX = std::uniform_real_distribution<float>(m_minPosX, m_maxPosX)(m_rng);
+	float distY = std::uniform_real_distribution<float>(m_minPosY, m_maxPosY)(m_rng);
 
 	// To point to the player 
 	Vector2 pointToPlayer = Vector2Subtract(playerPos, position);
 	float angleRad = atan2f(pointToPlayer.y, pointToPlayer.x);
 
 	// Generate the random position
-	float posX = distX(gen);
-	float posY = distY(gen);
+	float posX = distX;
+	float posY = distY;
 
 	int health = GetHealth();
 

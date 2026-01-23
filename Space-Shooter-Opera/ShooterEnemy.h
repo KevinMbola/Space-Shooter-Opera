@@ -22,7 +22,7 @@ private:
     float m_minPosX, m_minPosY;
     float m_maxPosX, m_maxPosY;
 
-    std::random_device m_rd;
+    std::mt19937 m_rng{ std::random_device{}() };
 
     void StayInBounds();
     void MoveShooterEnemy(float dt, float angleRad);
