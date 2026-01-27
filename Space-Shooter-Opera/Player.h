@@ -19,6 +19,7 @@ private:
     int m_health;
     float m_shotTimer = 0;
     float m_coolDown = .3f;
+    const char* pBullettexPath = "assets/bullets/playerBullet.png";
     
     // For invincibility frames
     bool m_invincible = false;

@@ -85,7 +85,7 @@ void SpeedsterEnemy::ShootAtPlayer(EntityManager& manager)
 	Vector2 bulletVel = { cosf(angleRad) * bulletSpeed, sinf(angleRad) * bulletSpeed };
 
 	// Create bullet at the enemy position
-	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, "assets/player/playerBullet.png");
+	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, eBullettexPath);
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(rotation);
 	bullet->SetOwner(this);

@@ -62,9 +62,11 @@ Enemy::Enemy(Vector2 pos, float speed, Type t, const char* texturePath)
 	{
 	case Enemy::Type::SHOOTER:
 		m_maxHealth = 7;
+		m_scoreValue = 5;
 		break;
 	case Enemy::Type::SPEED:
 		m_maxHealth = 1;
+		m_scoreValue = 10;
 		break;
 	case Enemy::Type::BRUISER:
 		m_maxHealth = 5;
@@ -126,6 +128,11 @@ int Enemy::GetHealth() const
 int Enemy::GetMaxHealth() const
 {
 	return m_maxHealth;
+}
+
+int Enemy::GetScoreValue() const
+{
+	return m_scoreValue;
 }
 
 Enemy::Type Enemy::GetType() const

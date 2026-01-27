@@ -26,7 +26,7 @@ void Player::Shoot(float dt, EntityManager& manager)
 {
 	float bulletSpeed = 400.f;
 	Vector2 bulletVel = { 0, -bulletSpeed }; // For upward momentum
-	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, "assets/player/playerBullet.png");
+	auto bullet = std::make_unique<Bullet>(position, bulletSpeed, Bullet::Type::NORMAL, pBullettexPath);
 	bullet->SetVelocity(bulletVel);
 	bullet->SetRotation(-90.f); // For upwards
 	bullet->SetOwner(this);

@@ -18,6 +18,7 @@ private:
     float m_shootTimer = 0.0f;
     float m_shootInterval = 1.0f; // seconds between shots
 
+    const char* eBullettexPath = "assets/bullets/enemyBullet.png";
 
     float m_minPosX, m_minPosY;
     float m_maxPosX, m_maxPosY;

@@ -22,6 +22,7 @@ protected:
     int m_health;
     Color m_healthColour;
     Type m_type;
+    int m_scoreValue;
 
 private:
     void DrawHealthBar();
@@ -37,6 +38,7 @@ public:
     void TakeDamage(int damage);
     int GetHealth() const;
     int GetMaxHealth() const;
+    int GetScoreValue() const;
     Type GetType() const;
 };
 
