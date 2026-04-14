@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+option(FETCH_RAYLIB
+    "Download and build raylib 5.5 automatically via FetchContent when not found on the system"
+    ON)
+
 set(GAME_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Space-Shooter-Opera")
 set(GAME_TARGET "Space-Shooter-Opera")
 
@@ -50,9 +54,26 @@ if(NOT RAYLIB_TARGET AND WIN32 AND DEFINED ENV{RAYLIB_ROOT})
 endif()
 
 if(NOT RAYLIB_TARGET)
-    message(FATAL_ERROR
-        "raylib was not found. Install raylib and make sure CMake can find it, "
-        "or set the RAYLIB_ROOT environment variable on Windows.")
+    if(FETCH_RAYLIB)
+        message(STATUS "raylib not found on system — fetching raylib 5.5 via FetchContent")
+        include(FetchContent)
+        FetchContent_Declare(
+            raylib
+            GIT_REPOSITORY https://github.com/raysan5/raylib.git
+            GIT_TAG        5.5
+            GIT_SHALLOW    TRUE
+        )
+        set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+        set(BUILD_GAMES    OFF CACHE BOOL "" FORCE)
+        FetchContent_MakeAvailable(raylib)
+        set(RAYLIB_TARGET raylib)
+    else()
+        message(FATAL_ERROR
+            "raylib was not found. Options:\n"
+            "  1. Install raylib and make sure CMake can find it.\n"
+            "  2. On Windows, set the RAYLIB_ROOT environment variable.\n"
+            "  3. Let CMake download it automatically: cmake -DFETCH_RAYLIB=ON .")
+    endif()
 endif()
 
 target_link_libraries(${GAME_TARGET} PRIVATE ${RAYLIB_TARGET})
