@@ -14,6 +14,7 @@ The project currently includes:
 - C++17
 - [raylib 5.5](https://www.raylib.com/)
 - Visual Studio 2022 solution/project files (`.sln` / `.vcxproj`)
+- CMake build support (`CMakeLists.txt`)
 
 ## Controls
 
@@ -40,6 +41,22 @@ Space-Shooter-Opera/
         ├── background/
         └── player/
 ```
+
+## Build and Run (CMake)
+
+1. Install **CMake 3.16+** and **raylib 5.5**.
+2. From the repository root, configure and build:
+
+   ```bash
+   cmake -S . -B build
+   cmake --build build
+   ```
+
+3. Run the executable:
+   - Linux/macOS: `./build/Space-Shooter-Opera`
+   - Windows (PowerShell): `.\build\Debug\Space-Shooter-Opera.exe` (or `Release` for release builds)
+
+> If raylib is not automatically found on Windows, set `RAYLIB_ROOT` to your raylib install path before running CMake (the folder that contains `include/` and `lib/`).
 
 ## Build and Run (Windows + Visual Studio)
 
