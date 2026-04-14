@@ -14,6 +14,7 @@ The project currently includes:
 - C++17
 - [raylib 5.5](https://www.raylib.com/)
 - Visual Studio 2022 solution/project files (`.sln` / `.vcxproj`)
+- CMake build support (`CMakeLists.txt`)
 
 ## Controls
 
@@ -40,6 +41,33 @@ Space-Shooter-Opera/
         ├── background/
         └── player/
 ```
+
+## Build and Run (CMake)
+
+CMake 3.16+ is required. **raylib 5.5 is downloaded automatically** the first time you configure — no manual installation needed.
+
+1. From the repository root, configure and build:
+
+   ```bash
+   cmake -S . -B build
+   cmake --build build
+   ```
+
+2. Run the executable:
+   - Linux/macOS: `./build/Space-Shooter-Opera`
+   - Windows (PowerShell): `.\build\Debug\Space-Shooter-Opera.exe` (or `Release` for release builds)
+
+### Raylib options
+
+| Scenario | Command |
+|---|---|
+| Auto-download raylib 5.5 (default) | `cmake -S . -B build` |
+| Use a locally installed raylib | `cmake -S . -B build -DFETCH_RAYLIB=OFF` |
+| Windows with a manual raylib install | Set `RAYLIB_ROOT` env var, then `cmake -S . -B build -DFETCH_RAYLIB=OFF` |
+
+The `FETCH_RAYLIB` option is **ON** by default. When enabled, CMake clones raylib 5.5 from GitHub during configure via `FetchContent` and builds it alongside the game. If a system-installed raylib is detected first (via `find_package` or `pkg-config`), `FETCH_RAYLIB` is ignored and the system version is used.
+
+> **Windows manual install:** set `RAYLIB_ROOT` to your raylib install folder (the one containing `include/` and `lib/`) before running CMake.
 
 ## Build and Run (Windows + Visual Studio)
 
