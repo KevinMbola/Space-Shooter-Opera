@@ -5,17 +5,20 @@
 
 void ShooterEnemy::StayInBounds()
 {
-	// Clamp X
-	if (position.x < 20)
-		position.x = 20;
-	if (position.x > SCREEN_WIDTH - 20)
-		position.x = SCREEN_WIDTH - 20;
+	//// Clamp X
+	//if (position.x < 20)
+	//	position.x = 20;
+	//if (position.x > SCREEN_WIDTH - 20)
+	//	position.x = SCREEN_WIDTH - 20;
 
-	// Clamp Y 
-	if (position.y < 0)
-		position.y = 0;
-	if (position.y > SCREEN_HEIGHT - 200)
-		position.y = SCREEN_HEIGHT - 200;
+	//// Clamp Y 
+	//if (position.y < 0)
+	//	position.y = 0;
+	//if (position.y > SCREEN_HEIGHT - 200)
+	//	position.y = SCREEN_HEIGHT - 200;
+
+	position.x = std::clamp(position.x, 20.f, SCREEN_WIDTH - 20.f);
+	position.y = std::clamp(position.y, 0.f, SCREEN_HEIGHT - 200.f);
 }
 
 void ShooterEnemy::MoveShooterEnemy(float dt, float angleRad)

@@ -95,9 +95,9 @@ void SpeedsterEnemy::ShootAtPlayer(EntityManager& manager)
 
 SpeedsterEnemy::Phase SpeedsterEnemy::selectNextPhase()
 {
-	int phaseIndex = std::uniform_int_distribution<int>(0, 1)(m_rng);
-	m_phase = (phaseIndex == 0) ? Phase::STRAIGHT : Phase::USHAPE;
-	return m_phase;
+	const int phaseIndex = std::uniform_int_distribution<int>(0, 1)(m_rng);
+	
+	return phaseIndex == 0 ? Phase::STRAIGHT : Phase::USHAPE;;
 }
 
 SpeedsterEnemy::SpeedsterEnemy(Vector2 pos, float speed, const char* texturePath)
@@ -127,7 +127,12 @@ void SpeedsterEnemy::Update(float dt, EntityManager& manager, Vector2 playerPos)
 		{
 		case SpeedsterEnemy::Phase::IDLE:
 			leftSpawnPoint = std::uniform_int_distribution<int>(0, 1)(m_rng) == 0;
-			leftSpawnPoint ? position = { SCREEN_WIDTH / 2 - 150, -50 } : position = { SCREEN_WIDTH / 2 + 150, -50 }; // Keep the enmy off screen
+
+			if (leftSpawnPoint)
+				position = { SCREEN_WIDTH / 2 - 150, -50 };
+			else
+				position = { SCREEN_WIDTH / 2 + 150, -50 };
+			
 			m_uShapeStep = UShapeStep::DOWN;
 			m_phase = selectNextPhase();
 			break;

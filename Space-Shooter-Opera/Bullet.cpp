@@ -11,7 +11,8 @@ Bullet::Bullet(Vector2 pos, float speed, Type type, const char* texturePath) : E
 
 Bullet::~Bullet()
 {
-
+	if (texture.id != 0)
+		UnloadTexture(texture);
 }
 
 void Bullet::SetOwner(Entity* owner)

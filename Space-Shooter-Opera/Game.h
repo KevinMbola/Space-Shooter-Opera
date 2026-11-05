@@ -1,19 +1,20 @@
-#pragma 
+#pragma once
 
 #include <raylib.h>
+
+#include <vector>
+#include <random>
+#include <string>
+
+#include  "GameConfig.h"
 #include "EntityManager.h"
+
 #include "Player.h"
 #include "Bullet.h"
+#include "Enemy.h"
 #include "ShooterEnemy.h"
 #include "SpeedsterEnemy.h"
 
-
-#define SCREEN_WIDTH 500
-#define SCREEN_HEIGHT 800
-
-#define MAX_BACKGROUND 5
-#define STAR_COUNT 100
-#define MAX_METEORS 8
 
 
 enum class GameState { MENU, PLAYING, PAUSED, GAMEOVER };
@@ -41,12 +42,14 @@ private:
 	const char* playertexPath = "assets/player/player.png";
 	const char* bgMusicPath = "assets/sfx/fun-bgMusic.mp3";
 
+	bool m_isShuttingDown = false;
+
 	// Music and sfx
 	Music m_bgMusic;
 
 	// Background
-	Image backgound[MAX_BACKGROUND];
-	Texture2D texBackgrounds[MAX_BACKGROUND];
+	Image backgound[GameConfig::MAX_BACKGROUND];
+	Texture2D texBackgrounds[GameConfig::MAX_BACKGROUND];
 	//int m_selectBackground = 0;
 	//float m_backgroundOffset[MAX_BACKGROUND] = { 0 };	// This is to have a scrolling effect
 	
@@ -90,7 +93,7 @@ private:
 
 	void InitStarryBackground();
 	void DrawStarfield() const;
-	void UpdateStarfield(float dt);
+	void UpdateStarfield(float elapsed);
 	
 	// Handle the waves 
 	void SpawnWave();
@@ -117,7 +120,7 @@ public:
 	void Init();
 	void Update();
 	void Draw() const;
-	void FreeResources() const;
+	void FreeResources();
 	bool ShouldClose() const;
 
 	void Run();

@@ -17,6 +17,10 @@ public:
 		m_entities.reserve(count);
 	}
 
+	void Clear() {
+		m_entities.clear();
+	}
+
 	void AddEntity(std::unique_ptr<Entity> entity) {
 		//m_entities.push_back(std::move(entity));
 		m_entities.emplace_back(std::move(entity));

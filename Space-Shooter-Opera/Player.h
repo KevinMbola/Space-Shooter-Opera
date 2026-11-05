@@ -3,8 +3,6 @@
 
 #include <array>
 
-#define SCREEN_WIDTH 500
-#define SCREEN_HEIGHT 800
 
 #define MAX_BULLETS 1000
 
